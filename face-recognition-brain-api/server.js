@@ -1,29 +1,25 @@
 const express = require('express');
-const bodyParser = require('body-parser'); // latest version of exressJS now comes with Body-Parser!
+const bodyParser = require('body-parser'); 
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex')
 
 const db = knex({
-  // Enter your own database information here based on what you created
   client: 'pg',
   connection: {
     host : '127.0.0.1',
-    user : 'aneagoie',
+    user : 'maana',
     password : '',
-    database : 'smart-brain'
+    database : 'smart-eye'
   }
 });
 
 const app = express();
 
 app.use(cors())
-app.use(express.json()); // latest version of exressJS now comes with Body-Parser!
+app.use(express.json()); 
 
-// Test only - when you have a database variable you want to use
-// app.get('/', (req, res)=> {
-//   res.send(database.users);
-// })
+
 
 app.post('/signin', (req, res) => {
   db.select('email', 'hash').from('login')
@@ -58,10 +54,6 @@ app.post('/register', (req, res) => {
         return trx('users')
           .returning('*')
           .insert({
-            // If you are using knex.js version 1.0.0 or higher this now returns an array of objects. Therefore, the code goes from:
-            // loginEmail[0] --> this used to return the email
-            // TO
-            // loginEmail[0].email --> this now returns the email
             email: loginEmail[0].email,
             name: name,
             joined: new Date()
